@@ -1,12 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="bd927a0f-8afe-467a-b1b5-f66b681027e9" name="Changes" comment="" />
+    <list default="true" id="bd927a0f-8afe-467a-b1b5-f66b681027e9" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../AskInfo/claude_improvements.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AskInfo/streamlit.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Gemma3Vis/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Gemma3Vis/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Gemma3Vis/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Gemma3Vis/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Gemma3Vis/main.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../RAGStream/NeonSt.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Reconciliacion.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Reconciliacion.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="ROOT_SYNC" value="SYNC" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "JoseFranciscoBrothers"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/JoseFranciscoBrothers/Reconciliacion.git",
+    "accountId": "40c4ab99-2723-40d8-98e8-8797e80df425"
+  }
+}]]></component>
   <component name="ProjectColorInfo"><![CDATA[{
   "associatedIndex": 6
 }]]></component>
@@ -18,7 +53,8 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true"
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master"
   }
 }]]></component>
   <component name="SharedIndexes">

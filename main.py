@@ -13,9 +13,6 @@ def load_SSC_df(path):
     df = df.loc[df["Tk status"]!="41"]
     return df
 
-SSC_df = load_SSC_df(SSC_path)
-
-
 def group_status(df, status):
     df = df.loc[df["Tk status"] == status]
 
@@ -26,12 +23,6 @@ def group_status(df, status):
     grouped.columns = ["Material_" + status, "Quantity_Status" + status, "Transport_Status" + status]
 
     return grouped
-
-grouped_00 = group_status(SSC_df, "00")
-
-grouped_10 = group_status(SSC_df, "10")
-
-grouped_21 = group_status(SSC_df, "21")
 
 def load_diference(path):
     df = pd.read_excel(path,sheet_name="Interface_510")
@@ -46,22 +37,11 @@ def load_diference(path):
                           "WMS not available","Delta not available"])
     return df
 
-diference_df = load_diference(diference_path)
-
-comparison = pd.merge(diference_df, grouped_00, left_on="Material", right_on="Material_00", how='left')
-comparison = pd.merge(comparison, grouped_10, left_on="Material", right_on="Material_10", how='left')
-comparison = pd.merge(comparison, grouped_21, left_on="Material", right_on="Material_21", how='left')
-comparison = comparison.drop(columns=['Material_00', 'Material_10', 'Material_21'])
-
-
 def load_inventory(path):
     df = pd.read_excel(path,sheet_name="Sheet1")
     df = df.loc[df["PLANT2"]=="SL20"]
     df = df.loc[df["HOLD_FLAG"]=="Y"]
     return df
-
-
-inventory_df = load_inventory(inventory_path)
 
 
 def group_hold(df, holdcode):
@@ -75,21 +55,34 @@ def group_hold(df, holdcode):
 
     return grouped
 
+
+SSC_df = load_SSC_df(SSC_path)
+grouped_00 = group_status(SSC_df, "00")
+
+grouped_10 = group_status(SSC_df, "10")
+
+grouped_21 = group_status(SSC_df, "21")
+
+diference_df = load_diference(diference_path)
+
+comparison = pd.merge(diference_df, grouped_00, left_on="Material", right_on="Material_00", how='left')
+comparison = pd.merge(comparison, grouped_10, left_on="Material", right_on="Material_10", how='left')
+comparison = pd.merge(comparison, grouped_21, left_on="Material", right_on="Material_21", how='left')
+comparison = comparison.drop(columns=['Material_00', 'Material_10', 'Material_21'])
+
+inventory_df = load_inventory(inventory_path)
+
 grouped_damage = group_hold(inventory_df, "DAMAGE")
 
 grouped_dib = group_hold(inventory_df, "DIB")
 
-
 grouped_dih = group_hold(inventory_df, "DIH")
-
 
 grouped_qua = group_hold(inventory_df, "QUA")
 
 grouped_lost = group_hold(inventory_df, "LOST")
 
-
 grouped_stage = group_hold(inventory_df, "STAGE")
-
 
 comparison_mat = comparison
 comparison_mat = pd.merge(comparison_mat, grouped_damage, left_on="Material", right_on="Material_DAMAGE", how='left')
@@ -101,5 +94,5 @@ comparison_mat = pd.merge(comparison_mat, grouped_stage, left_on="Material", rig
 comparison_mat = comparison_mat.drop(columns=["Material_DAMAGE", "Material_DIB",
                                               "Material_DIH", "Material_QUA","Material_LOST","Material_STAGE"])
 
-display(comparison_mat)
+print(comparison_mat)
 

@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="bd927a0f-8afe-467a-b1b5-f66b681027e9" name="Changes" comment="">
+    <list default="true" id="bd927a0f-8afe-467a-b1b5-f66b681027e9" name="Changes" comment="Streamlit project">
       <change afterPath="$PROJECT_DIR$/../AskInfo/claude_improvements.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../AskInfo/streamlit.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../Gemma3Vis/.idea/.gitignore" afterDir="false" />
@@ -10,9 +13,8 @@
       <change afterPath="$PROJECT_DIR$/../Gemma3Vis/.idea/vcs.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../Gemma3Vis/main.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../RAGStream/NeonSt.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Reconciliacion.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Reconciliacion.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,9 +56,15 @@
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
     "git-widget-placeholder": "master"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\GA_MEXICA_1\PycharmProjects\Reconciliacion" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -72,6 +80,19 @@
       <option name="presentableId" value="Default" />
       <updated>1762537865123</updated>
     </task>
+    <task id="LOCAL-00001" summary="Streamlit project">
+      <option name="closed" value="true" />
+      <created>1762538413425</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1762538413425</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Streamlit project" />
+    <option name="LAST_COMMIT_MESSAGE" value="Streamlit project" />
   </component>
 </project>

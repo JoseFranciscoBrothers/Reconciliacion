@@ -1,6 +1,157 @@
 import io
 import pandas as pd
 import streamlit as st
+import joblib
+from sklearn.base import BaseEstimator, TransformerMixin
+from sklearn.pipeline import Pipeline
+import numpy as np
+import ast
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.preprocessing import LabelEncoder
+from sklearn.model_selection import train_test_split
+
+
+class fillNaColumns(BaseEstimator, TransformerMixin):
+    def fit(self, X, y=None):
+        return self  # nothing else to do
+
+    def transform(self, X, y=None):
+        values = {
+            "Quantity_Status00": 0,
+            "Quantity_Status10": 0,
+            "Quantity_Status21": 0,
+            "Quantity_DAMAGE": 0,
+            "Quantity_DIB": 0,
+            "Quantity_DIH": 0,
+            "Quantity_QUA": 0,
+            "Quantity_LOST": 0,
+            "Quantity_STAGE": 0,
+        }
+
+        list_columns = [
+            "Transport_Status00", "Transport_Status10", "Transport_Status21",
+            "Transport_DAMAGE", "Transport_DIB", "Transport_DIH",
+            "Transport_QUA", "Transport_LOST", "Transport_STAGE"
+        ]
+
+        # First fill numeric columns
+        X = X.fillna(value=values)
+
+        # Then fill list columns safely with *distinct* empty lists
+        for col in list_columns:
+            X[col] = X[col].apply(lambda x: [] if isinstance(x, float) and pd.isna(x) else x)
+
+        return X
+
+
+class addList(BaseEstimator, TransformerMixin):
+    def fit(self, X, y=None):
+        return self  # nothing else to do
+
+    def transform(self, X, y=None):
+        transport_cols = X.filter(regex=r"^Transport_").columns
+
+        def to_list(x):
+            """Safely convert a cell into a list."""
+            if isinstance(x, list):
+                return x
+            if pd.isna(x):
+                return []
+            if isinstance(x, str):
+                s = x.strip()
+                if s.startswith('[') and s.endswith(']'):
+                    try:
+                        parsed = ast.literal_eval(s)
+                        if isinstance(parsed, list):
+                            return parsed
+                    except Exception:
+                        pass
+                # Otherwise split by commas or spaces if looks like multiple items
+                if "," in s:
+                    return [i.strip() for i in s.split(",") if i.strip()]
+                return [s]
+            return [x]
+
+        X["Lists"] = X[transport_cols].apply(
+            lambda row: sum((to_list(row[col]) for col in transport_cols), []),
+            axis=1
+        )
+
+        return X
+
+
+class addManufacturer(BaseEstimator, TransformerMixin):
+    def fit(self, X, y=None):
+        return self  # nothing else to do
+
+    def transform(self, X, y=None):
+
+        def get_manufacturer(values):
+            if not values:  # empty list
+                return "UNKNOWN"
+
+            has_tr = any(str(v).startswith("TR") for v in values)
+            has_non_tr = any(not str(v).startswith("TR") for v in values)
+
+            if has_tr and has_non_tr:
+                return "BOTH"
+            elif has_tr:
+                return "COSBEL"
+            elif has_non_tr:
+                return "CM"
+            else:
+                return "UNKNOWN"
+
+        # Apply the function to your combined list column
+        X["Manufacturer"] = X["Lists"].apply(get_manufacturer)
+
+        return X
+
+
+class dropUseless(BaseEstimator, TransformerMixin):
+    def fit(self, X, y=None):
+        return self  # nothing else to do
+
+    def transform(self, X, y=None):
+        cols_to_drop = list_columns = [
+            "Transport_Status00", "Transport_Status10", "Transport_Status21",
+            "Transport_DAMAGE", "Transport_DIB", "Transport_DIH",
+            "Transport_QUA", "Transport_LOST", "Transport_STAGE", "Lists", "Material"
+        ]
+        X = X.drop(columns=cols_to_drop)
+
+        return X
+
+
+class PreprocessColumns(BaseEstimator, TransformerMixin):
+    def __init__(self):
+        self.preprocessor = None
+
+    def fit(self, X, y=None):
+        categorical_features = ['Manufacturer']
+        numeric_features = list(set(X.columns) - set(categorical_features))
+
+        numeric_transformer = StandardScaler()
+        categorical_transformer = OneHotEncoder(handle_unknown='ignore')
+
+        # Define preprocessor
+        self.preprocessor = ColumnTransformer(
+            transformers=[
+                ('num', numeric_transformer, numeric_features),
+                ('cat', categorical_transformer, categorical_features)
+            ]
+        )
+
+        # Fit it
+        self.preprocessor.fit(X)
+        return self
+
+    def transform(self, X, y=None):
+        # Apply transformation
+        return self.preprocessor.transform(X)
+
 
 st.set_page_config(page_title="Reconciliación", page_icon="📊", layout="wide")
 
@@ -92,8 +243,22 @@ def generate(SSC_path, diference_path, inventory_path):
 
     st.session_state.comparison_mat = comparison_mat
 
+
+
+def predict(comparison):
+
+    pipeline_loaded = joblib.load("pipeline_predict.joblib")
+
+    # Predict directly — same as before!
+    y_pred = pipeline_loaded.predict(comparison)
+    table = comparison["Material"]
+    table = comparison[["Material","Delta total"]].copy()  # Ensure it's a DataFrame
+    table["Prediccion"] = y_pred
+    st.session_state.predict = table
+
 if 'comparison_mat' not in st.session_state:
     st.session_state.comparison_mat = False
+    st.session_state.predict = False
 
 with st.sidebar:
     st.header("⚙️ Parámetros")
@@ -141,5 +306,24 @@ if isinstance(st.session_state.get("comparison_mat"), pd.DataFrame) and not st.s
         file_name='Reconciliacion.xlsx',
         mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     )
+
+    with st.form("pred_form", clear_on_submit=False):
+        predict_button = st.form_submit_button("🚀 Predecir razón del error", disabled=not ready, use_container_width=True)
+    if predict_button:
+        with st.spinner("Prediciendo errores..."):
+            try:
+                predict(st.session_state.comparison_mat)
+                st.success("Predicción generada ✅")
+                st.balloons()
+            except Exception as e:
+                st.error(f"Error: {e}")
+
+
+
 else:
     st.info("Genera la reconciliación para ver resultados.")
+
+
+if isinstance(st.session_state.get("predict"), pd.DataFrame) and not st.session_state.predict.empty:
+    st.subheader("📋 Predicciónes")
+    st.dataframe(st.session_state.predict, use_container_width=True, height=600)

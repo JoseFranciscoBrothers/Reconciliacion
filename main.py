@@ -168,6 +168,7 @@ def load_SSC_df(path):
     df = df.iloc[1:, :]
     df = df.loc[df["Plnt"] == "560"]
     df = df.loc[df["Tk status"] != "41"]
+    df['Order'] = df['Order'].astype(str)
     return df
 
 def group_status(df, status):
@@ -175,12 +176,12 @@ def group_status(df, status):
     try:
         grouped = df.groupby('Material').agg({
             'Packed quantity': "sum",
-            'Order': lambda x: list(str(x.unique()))
+            'Order': lambda x: list(x.unique())
         }).reset_index()
     except: 
         grouped = df.groupby('Material').agg({
             'Packed quantity': "sum",
-            'Start': lambda x: list(str(x.unique()))
+            'Start': lambda x: list(x.unique())
         }).reset_index()
     grouped.columns = ["Material_" + status, "Quantity_Status" + status, "Transport_Status" + status]
     return grouped

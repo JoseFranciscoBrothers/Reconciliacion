@@ -174,7 +174,7 @@ def group_status(df, status):
     df = df.loc[df["Tk status"] == status]
     grouped = df.groupby('Material').agg({
         'Packed quantity': "sum",
-        'Start': lambda x: list(x.unique())
+        'Order': lambda x: list(x.unique())
     }).reset_index()
     grouped.columns = ["Material_" + status, "Quantity_Status" + status, "Transport_Status" + status]
     return grouped

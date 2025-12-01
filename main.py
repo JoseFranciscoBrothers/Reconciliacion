@@ -166,20 +166,6 @@ def load_SSC_df(path):
     df = pd.read_excel(path, sheet_name="Sheet1")
     df.columns = df.iloc[0]
     df = df.iloc[1:, :]
-    try:
-        df["Plnt"] = df["Ce."]
-    except:
-        pass
-
-    try:
-        df["Order"] = df["Orden"]
-    except:
-        pass
-
-    try:
-        df["Packed quantity"] = df["Cantidad embalada"]
-    except:
-        pass
 
     df = df.loc[df["Plnt"] == "560"]       
     df = df.loc[df["Tk status"] != "41"]

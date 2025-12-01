@@ -187,7 +187,7 @@ def group_status(df, status):
 def load_diference(path):
     df = pd.read_excel(path, sheet_name="Interface_510")
     df["Plant"] = df["Plant"].astype(str)
-    df = df.loc[df["Plnt"].isin(["560","561"])] 
+    df = df.loc[df["Plant"].isin(["560","561"])] 
     df["Delta total"] = df["Delta total"].astype(str)
     df["Delta total"] = df["Delta total"].str.replace(r'\.0$', '', regex=True)
     df["Delta total"] = df["Delta total"].astype(float)

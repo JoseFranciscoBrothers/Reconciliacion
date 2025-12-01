@@ -186,17 +186,16 @@ def group_status(df, status):
 
 def load_diference(path):
     df = pd.read_excel(path, sheet_name="Interface_510")
-    df.columns = df.iloc[0]
-    df = df.iloc[1:, :13]
+    df["Plant"] = df["Plant"].astype(str)
     df = df.loc[df["Plant"] == "560"]
+    df["Delta total"] = df["Delta total"].astype(str)
+    df["Delta total"] = df["Delta total"].str.replace(r'\.0$', '', regex=True)
+    df["Delta total"] = df["Delta total"].astype(float)
     df = df.loc[df["Delta total"].notnull()]
     df = df.loc[df["Delta total"] != 0]
     df = df.loc[df["Storage Location"] == "SL20"]
-    df = df.drop(columns=[
-        "Plant", "Storage Location", "Base Unit of Measure",
-        "ISIS Available Stock Qty", "WMS/Stock", "Delta", "Isis not available",
-        "WMS not available", "Delta not available"
-    ])
+    df = df[["Material","ISIS Total","WMS Total","Delta total"]]
+
     return df
 
 def load_inventory(path):

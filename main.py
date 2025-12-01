@@ -169,17 +169,17 @@ def load_SSC_df(path):
     try:
         df["Plnt"] = df["Ce."]
     except:
-        continue
+        pass
 
     try:
         df["Order"] = df["Orden"]
     except:
-        continue
+        pass
 
     try:
         df["Packed quantity"] = df["Cantidad embalada"]
     except:
-        continue
+        pass
 
     df = df.loc[df["Plnt"] == "560"]       
     df = df.loc[df["Tk status"] != "41"]

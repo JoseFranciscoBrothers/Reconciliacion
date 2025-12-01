@@ -200,7 +200,7 @@ def load_diference(path):
 
 def load_inventory(path):
     df = pd.read_excel(path, sheet_name="Sheet1")
-    df = df.loc[df["PLANT2"].isin(["SL20","SL30"])
+    df = df.loc[df["PLANT2"].isin(["SL20","SL30"])]
     df = df.loc[df["HOLD_FLAG"] == "Y"]
     return df
 

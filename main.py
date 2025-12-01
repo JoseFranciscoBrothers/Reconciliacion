@@ -169,7 +169,7 @@ def load_SSC_df(path):
     df["Tk status"] = df["Tk status"].astype(str)
     df["Tk status"] = df["Tk status"].str.replace(r'\.0$', '', regex=True)
 
-    df = df.loc[df["Plnt"].isin(["560","561"])]       
+    df = df.loc[df["Plnt"].isin(["560", "561"])]      
     df = df.loc[df["Tk status"] != "41"]
     df['Order'] = df['Order'].astype(str)
 

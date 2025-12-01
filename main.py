@@ -166,9 +166,25 @@ def load_SSC_df(path):
     df = pd.read_excel(path, sheet_name="Sheet1")
     df.columns = df.iloc[0]
     df = df.iloc[1:, :]
-    df = df.loc[df["Plnt"] == "560"]
+    try:
+        df["Plnt"] = df["Ce."]
+    except:
+        continue
+
+    try:
+        df["Order"] = df["Orden"]
+    except:
+        continue
+
+    try:
+        df["Packed quantity"] = df["Cantidad embalada"]
+    except:
+        continue
+
+    df = df.loc[df["Plnt"] == "560"]       
     df = df.loc[df["Tk status"] != "41"]
     df['Order'] = df['Order'].astype(str)
+
     return df
 
 def group_status(df, status):

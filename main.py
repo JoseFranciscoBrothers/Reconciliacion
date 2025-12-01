@@ -193,14 +193,14 @@ def load_diference(path):
     df["Delta total"] = df["Delta total"].astype(float)
     df = df.loc[df["Delta total"].notnull()]
     df = df.loc[df["Delta total"] != 0]
-    df = df.loc[df["Storage Location"] == "SL20"]
+    df = df.loc[df["Storage Location"].isin(["SL20","SL30"])]
     df = df[["Material","ISIS Total","WMS Total","Delta total"]]
 
     return df
 
 def load_inventory(path):
     df = pd.read_excel(path, sheet_name="Sheet1")
-    df = df.loc[df["PLANT2"] == "SL20"]
+    df = df.loc[df["PLANT2"].isin(["SL20","SL30"])
     df = df.loc[df["HOLD_FLAG"] == "Y"]
     return df
 

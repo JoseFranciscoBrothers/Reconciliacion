@@ -189,15 +189,9 @@ def load_SSC_df(path):
 
 def group_status(df, status):
     df = df.loc[df["Tk status"] == status]
-    try:
-        grouped = df.groupby('Material').agg({
+    grouped = df.groupby('Material').agg({
             'Packed quantity': "sum",
             'Order': lambda x: list(x.unique())
-        }).reset_index()
-    except: 
-        grouped = df.groupby('Material').agg({
-            'Packed quantity': "sum",
-            'Start': lambda x: list(x.unique())
         }).reset_index()
     grouped.columns = ["Material_" + status, "Quantity_Status" + status, "Transport_Status" + status]
     return grouped

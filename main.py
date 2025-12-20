@@ -165,7 +165,7 @@ st.markdown("""
 def load_SSC_df(path):
     df = pd.read_excel(path, sheet_name="Sheet1")
     df["Plnt"] = df["Plnt"].astype(str)
-    df["Plnt"] = df["Plnt"].str.replace(r'\.0$', '', regex=True)
+    #df["Plnt"] = df["Plnt"].str.replace(r'\.0$', '', regex=True)
     df["Tk status"] = df["Tk status"].astype(str)
     df["Tk status"] = df["Tk status"].str.replace(r'\.0$', '', regex=True)
 
